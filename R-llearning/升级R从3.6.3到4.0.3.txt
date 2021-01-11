@@ -1,0 +1,51 @@
+升级R从3.6.3到4.0.3
+
+1.安装Rtools4.0到d:\Program files\R\rtools40\（用于编译R 4.0之前的packages），把d:\Program files\R\rtools40\、d:\Program files\R\rtools40\mingw64\bin\、d:\Program files\R\rtools40\usr\bin\添加到系统环境变量的path里（测试：Sys.which("make")，应出来                                                 
+"d:\\Program files\\R\\rtools40\\usr\\bin\\make.exe" ），并把.\etc\pacman.d中
+在mirrorlist.mingw32文件开头添加：Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/i686/；
+在mirrorlist.mingw64文件开头添加：Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/mingw/x86_64/：
+在mirrorlist.msys文件开头添加：Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch/；
+
+2.升级R：下载最新版R forwindows的base：R-4.0.3-win.exe安装到d:\Program files\R\R-4.0.3\；
+
+3.在.\R-4.0.3\etc\的Rprofile.site的最后加：options(repos=structure(c(CRAN="https://mirrors.tuna.tsinghua.edu.cn/CRAN/")))；
+
+4.启动R-4.0.3Gui，运行如下命令：
+
+# 检查确认安装包库路径
+
+.libPaths()
+
+# 获取旧包名称（如位于D:/Program Files/R/R-3.6.3/library）
+old_packages <- installed.packages(lib.loc =  "D:/Program Files/R/R-3.6.3/library")
+old_packages <- as.data.frame(old_packages)
+list.of.packages <- unlist(old_packages$Package)
+
+# 删除旧R包
+remove.packages( installed.packages( priority = "NA" )[,1] )
+
+# 重新安装所有R程序包
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages,function(x){library(x,character.only=TRUE)})
+
+弹出Question:
+Do you want to install from sources the packages which need compilation?
+选择“是”。
+
+5. 启动RStudio，选择tools-global options-packages-TUNA镜像
+
+6. R语言无法调用stats.dll的问题解决---unable to load shared object ‘d:/Program files/R/R-4.0.3/library/stats/libs/x64/stats.dll
+将d:\Program files\R\R-3.6.3\bin\x64\目录下的所有文件，拷贝到d:\Program files\R\R-4.0.3\library\stats\libs\x64\。
+
+7. 安装github包，有些包来自于github，则用install_github安装，如
+remotes::install_github("ricardo-bion/ggradar",  dependencies = TRUE)
+
+Warning in install.packages :
+  packages ‘anomalyDetection’, ‘bbplot’, ‘BiocVersion’, ‘echarts’, ‘ggradar’, ‘ggtech’, ‘ggthemr’, ‘ghit’, ‘rCharts’, ‘recharts’, ‘REmap’, ‘ReporteRs’, ‘ReporteRsjars’, ‘streamgraph’, ‘tidycells’, ‘timekit’, ‘translations’, ‘XLConnectJars’, ‘xltabr’ are not available for this version of R
+
+Versions of these packages for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages
+Warning in install.packages :
+  dependency ‘graph’ is not available
