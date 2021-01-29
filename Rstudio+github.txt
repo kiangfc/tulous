@@ -1,0 +1,40 @@
+git init
+git add .
+git commit -m "first commit"
+
+git remote add origin git@github.com:kiangfc/tolous.git
+git push -u origin main
+
+在RStudio中生成ssh，设置passphase为kiangfc，并复制ssh
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJsiYu/C2O050OJoTIYgWjezwGKGz7k2U48IWt9IRAKy+688GHEzlHeboaeSBM7DA3632nnqDhDjDeCkOYcEhSsUnqWseL738CHgQdFj5wr1FWFtRxJ+NQi8YQpcPAddhheZ/7t4gF+ftX/mDehVpvlWZoaROJqaDwsf+EG7gS3kKLKjbUPODyU4aG8CADGIl5VQeejvFYB3mnrgjzmtX994Wc1YrX8uL22JXxR6BzDK24WQfFIDzrp74b111/uhoQ1DF2oGX78bNhi21qZAkgLvQQBPGbtMUSp1Y5zNxSj88ypWaHAVKoecmEmTuO8obhjaDLiwoZUu0xOnMVIqnz chaossvm@DESKTOP-1RH7HF3
+
+Generating public/private rsa key pair.
+Your identification has been saved in C:/Users/jiangth/.ssh/id_rsa.
+Your public key has been saved in C:/Users/jiangth/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:DkHRMdpBW1BNgZ9eS8rD4HdNK5WDUV37MbC87QBLPJE jiangth@chaossvm
+The key's randomart image is:
++---[RSA 2048]----+
+|      o+*+o=+o..+|
+|     . o.=oE+.o o|
+|      o o  * +o+.|
+|       .  o *.=+=|
+|      . S. * *.=+|
+|       o  . B.=..|
+|        .  . o.. |
+|                 |
+|                 |
++----[SHA256]-----+
+
+$ git config --global user.name "atien"
+$ git config --global user.email "kiangfc@126.com"
+
+把复制ssh秘钥，放到github中 SSH and GPG keys, 打开方法:
+
+打开github,点击头像,然后点击Setting
+在左边选择 SSH and GPG keys
+（删除原SSH）点击 New SSH key,将 id_rsa.pub的内容粘贴进去，输入passphase（kiangfc），点击new SSH key。
+
+ssh -T git@github.com
+Enter passphrase for key '/c/Users/chaossvm/.ssh/id_rsa':输入kiangfc
+Hi kiangfc! You've successfully authenticated, but GitHub does not provide shell access.
